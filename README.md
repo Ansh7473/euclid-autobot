@@ -55,6 +55,3 @@ Contributions are **highly appreciated**!
 If you'd like to contribute to **Pharos Auto Bot**, here's how:
 
 1. **Fork** the repository
-2. **Create a new branch**  
-   ```bash
-   git checkout -b feature/your-feature-name
