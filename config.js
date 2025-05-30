@@ -59,6 +59,8 @@ export const RETRY = {
   DELAY: [3000, 5000], // Default delay between retries (ms)
 };
 
+
+//added bcz script stuck confirming status throught website and their web is unstable to update status 
 export const CHECK_SWAP_STATUS = {
   arbitrum: { MAX_ATTEMPTS: 1, DELAY: 3000 },
   base: { MAX_ATTEMPTS: 10, DELAY: 30000 },
