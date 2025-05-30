@@ -10,7 +10,7 @@ const config = {
   chainId: 6342,
   name: 'MEGA Testnet',
   chainUid: 'megaeth',
-  contract: '', // TODO: Add valid contract address for Euclid Protocol
+  contract: '0x7f2cc9fe79961f628da671ac62d1f2896638edd5', // Real Euclid Protocol contract address for MegaETH
   explorer: 'https://megaexplorer.xyz/tx/',
   tokens: ['eth', 'euclid', 'usdc', 'usdt'],
   graphqlApi: 'https://testnet.api.euclidprotocol.com/graphql',
@@ -335,48 +335,92 @@ const processSwap = async (privateKey, swapType, numTransactions, minEthAmount, 
           break;
         }
 
-        let tx = {
-          to: config.contract || '0x0000000000000000000000000000000000000000', // Placeholder
+        // Use simple transaction object for simulation like Somnia fix
+        const simulationTx = {
+          to: config.contract,
           value: amountInWei,
-          data: txData,
-          nonce: await provider.getTransactionCount(walletAddress, 'pending'),
+          data: txData
         };
-        // Dynamically set maxFeePerGas and maxPriorityFeePerGas for MegaETH
-        try {
-          // Only fetch block header, not full block (fixes 'full block not allowed' error)
-          const latestBlock = await provider.getBlock('latest', false);
-          const baseFee = latestBlock.baseFeePerGas || (latestBlock.baseFeePerGas === 0 ? 0 : null);
-          // Use a reasonable priority fee (e.g., 1 gwei)
-          const priorityFee = ethers.parseUnits('1', 'gwei');
-          if (baseFee !== null && baseFee !== undefined) {
-            tx.maxPriorityFeePerGas = priorityFee;
-            tx.maxFeePerGas = baseFee + priorityFee;
-          } else {
-            // fallback to 2 gwei if baseFee is not available
-            tx.maxPriorityFeePerGas = priorityFee;
-            tx.maxFeePerGas = ethers.parseUnits('2', 'gwei');
-          }
-        } catch (feeError) {
-          logger.warn(`[MegaETH] Failed to fetch base fee: ${feeError.message}. Using default gas fees.`);
-          const fallback = ethers.parseUnits('2', 'gwei');
-          tx.maxPriorityFeePerGas = fallback;
-          tx.maxFeePerGas = fallback;
-        }
-        // Estimate and cap gasLimit
-        try {
-          const gasEstimate = await provider.estimateGas(tx);
-          tx.gasLimit = (gasEstimate * 120n) / 100n;
-          if (tx.gasLimit > 10000000n) tx.gasLimit = 10000000n; // Cap to MegaETH max
-        } catch (gasError) {
-          logger.warn(`[MegaETH] Gas estimation failed. Using default: 10000000`);
-          tx.gasLimit = 10000000n;
-        }
+
+        logger.debug(`[MegaETH] Simulation tx object: to=${simulationTx.to}, value=${simulationTx.value.toString()}, dataLength=${txData.length}`);
 
         try {
-          await provider.call(tx);
+          // Use simple transaction object for simulation (matching Somnia fix)
+          logger.debug(`[MegaETH] Pre-transaction simulation: to=${simulationTx.to}, value=${simulationTx.value.toString()}, data=${simulationTx.data.slice(0, 100)}...`);
+          await provider.call(simulationTx);
+          logger.debug(`[MegaETH] Simulation passed successfully`);
         } catch (simulationError) {
-          logger.error(`[MegaETH] Simulation failed: ${simulationError.reason || simulationError.message}`);
+          const errorMsg = simulationError.reason || simulationError.message || 'Unknown simulation error';
+          logger.error(`[MegaETH] Simulation failed: ${errorMsg}`);
+          
+          // Check if it's the specific FactoryV1 error
+          if (errorMsg.includes('FactoryV1') || errorMsg.includes('Delegate Call Reverted Silently')) {
+            logger.warn(`[MegaETH] FactoryV1 delegate call error detected. This may be due to:`);
+            logger.warn(`[MegaETH] - Insufficient escrow balance for target token`);
+            logger.warn(`[MegaETH] - Incorrect contract address or calldata`);
+            logger.warn(`[MegaETH] - Route not properly funded`);
+            
+            // Try with a different token if available
+            if (attempt < maxAttempts - 1) {
+              logger.warn(`[MegaETH] Attempting with different token...`);
+              break; // Will retry with new token
+            }
+          }
           break;
+        }
+
+        // Build full transaction object for actual sending after simulation passes
+        let tx = {
+          to: config.contract,
+          value: BigInt(amountInWei.toString()),
+          data: txData,
+        };
+
+        // Get gas estimate using simple transaction structure first (like Somnia fix)
+        let finalGasLimit = gasLimit;
+        try {
+          // Use simple transaction structure for gas estimation (same as simulation)
+          const gasEstimate = await provider.estimateGas(simulationTx);
+          finalGasLimit = (gasEstimate * 120n) / 100n;
+          if (finalGasLimit > 10000000n) finalGasLimit = 10000000n; // Cap to MegaETH max
+          logger.debug(`[MegaETH] Gas estimated with simple tx: ${gasEstimate}, using: ${finalGasLimit}`);
+        } catch (gasError) {
+          logger.warn(`[MegaETH] Gas estimation failed: ${gasError.message}. Using default: ${gasLimit}`);
+          finalGasLimit = gasLimit;
+        }
+
+        // Set gas limit
+        tx.gasLimit = finalGasLimit;
+
+        // Add nonce
+        tx.nonce = await provider.getTransactionCount(walletAddress, 'pending');
+
+        // Use simpler gas pricing approach for MegaETH (similar to Somnia fix)
+        try {
+          const feeData = await provider.getFeeData();
+          if (feeData.gasPrice) {
+            // Use legacy gas pricing if available (more reliable like Somnia)
+            tx.gasPrice = feeData.gasPrice;
+            logger.debug(`[MegaETH] Using legacy gas price: ${ethers.formatUnits(feeData.gasPrice, 'gwei')} gwei`);
+          } else {
+            // Fallback to EIP-1559 with conservative values (like Somnia)
+            const priorityFee = ethers.parseUnits('1', 'gwei'); // Lower priority fee
+            const maxFee = ethers.parseUnits('3', 'gwei'); // Lower max fee
+            tx.maxPriorityFeePerGas = priorityFee;
+            tx.maxFeePerGas = maxFee;
+            logger.debug(`[MegaETH] Using EIP-1559 fees: priority=${ethers.formatUnits(priorityFee, 'gwei')}gwei, max=${ethers.formatUnits(maxFee, 'gwei')}gwei`);
+          }
+        } catch (feeError) {
+          logger.warn(`[MegaETH] Failed to fetch fee data: ${feeError.message}. Using fallback gas price.`);
+          tx.gasPrice = ethers.parseUnits('3', 'gwei'); // Conservative fallback
+        }
+
+        logger.debug(`[MegaETH] Final tx object: to=${tx.to}, value=${tx.value.toString()}, gasLimit=${tx.gasLimit}, nonce=${tx.nonce}`);
+        
+        // Add additional validation before sending transaction (like Somnia)
+        if (tx.gasLimit > 25000000n) {
+          logger.warn(`[MegaETH] Gas limit seems too high: ${tx.gasLimit}. Using conservative limit.`);
+          tx.gasLimit = 10000000n; // Conservative gas limit for MegaETH (respecting their specs)
         }
 
         const txResponse = await wallet.sendTransaction(tx);
@@ -449,7 +493,7 @@ const processSwap = async (privateKey, swapType, numTransactions, minEthAmount, 
     if (i < numTransactions - 1) {
       const delay = (minDelay + Math.random() * (maxDelay - minDelay)) * 1000;
       logger.loading(`[MegaETH] Waiting ${Math.round(delay / 1000)} seconds before next transaction...`);
-      await randomDelay(SETTINGS.PAUSE_BETWEEN_SWAPS[0] * 1000, SETTINGS.PAUSE_BETWEEN_SWAPS[1] * 1000);
+      await randomDelay(minDelay * 1000, maxDelay * 1000);
     }
   }
 
@@ -460,7 +504,7 @@ const processSwap = async (privateKey, swapType, numTransactions, minEthAmount, 
 async function main() {
   const privateKeys = (await import('fs/promises')).readFile('private_keys.txt', 'utf8').then(data => data.split('\n').filter(x => x.startsWith('0x')));
   for (const key of await privateKeys) {
-    const numSwaps = FLOW.megaeth.NUMBER_OF_SWAPS[0] + Math.floor(Math.random() * (FLOW.megaeth.NUMBER_OF_SWAPS[1] - FLOW.megaeth.NUMBER_OF_SWAPS[0] + 1));
+    const numSwaps = getRandomInRange(FLOW.megaeth.NUMBER_OF_SWAPS[0], FLOW.megaeth.NUMBER_OF_SWAPS[1]);
     const minAmount = FLOW.megaeth.AMOUNT_TO_SWAP[0];
     const maxAmount = FLOW.megaeth.AMOUNT_TO_SWAP[1];
     const minDelay = SETTINGS.PAUSE_BETWEEN_SWAPS[0];
