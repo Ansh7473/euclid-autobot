@@ -68,6 +68,18 @@ export const CHECK_SWAP_STATUS = {
   somnia: { MAX_ATTEMPTS: 10, DELAY: 30000 },
 };
 
+
+
+
+//IGNORE
+
+
+
+
+
+
+
+
 export const randomDelay = (min = 2000, max = 5000, context = '') => {
   const delay = (min === max) ? min : Math.floor(Math.random() * (max - min + 1)) + min;
   if (typeof global !== 'undefined' && global.logger && context) {
