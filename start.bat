@@ -1,4 +1,4 @@
 echo.
 echo Starting EUCLID  
-node euclid.js
+node main.js
 pause
