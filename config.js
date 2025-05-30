@@ -54,10 +54,7 @@ export const SHOW_SWAP_PENDING_LOG = {
   somnia: true,
 };   
 
-export const RETRY = {
-  ATTEMPTS: 3, // Default retry attempts for all chains
-  DELAY: [3000, 5000], // Default delay between retries (ms)
-};
+
 
 
 //added bcz script stuck confirming status throught website and their web is unstable to update status 
@@ -73,6 +70,12 @@ export const CHECK_SWAP_STATUS = {
 
 
 //ignore
+
+
+export const RETRY = {
+  ATTEMPTS: 3, // Default retry attempts for all chains
+  DELAY: [3000, 5000], // Default delay between retries (ms)
+};
 
 export const randomDelay = (min = 2000, max = 5000, context = '') => {
   const delay = (min === max) ? min : Math.floor(Math.random() * (max - min + 1)) + min;
