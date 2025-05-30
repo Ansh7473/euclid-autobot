@@ -7,12 +7,8 @@ export const SETTINGS = {
   RANDOM_INITIALIZATION_PAUSE: [3,8], // Initial delay for each wallet (seconds)
 };
 
-
-// [✗] No supported tokens with valid routes on Base Sepolia. // [✗] No supported tokens with valid routes on Base Sepolia.  
-//[✗] No supported tokens with valid routes on Base Sepolia.  // [✗] No supported tokens with valid routes on Base Sepolia.
+//[✗] No supported tokens with valid routes on Base Sepolia.
 //NOTE: // if no route try incresing amount 
-//NOTE: // if no route try incresing amount 
-
 export const FLOW = {
   arbitrum: {
     NUMBER_OF_SWAPS: [2, 6],
@@ -39,15 +35,11 @@ export const FLOW = {
     AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
 };
-            //added to manage this  :)
-            //[⟳] [Base Sepolia] Swap pending (Attempt 1/10): ,,
-            //[⟳] [Base Sepolia] Swap pending (Attempt 2/10): ,,
-            //[⟳] [Base Sepolia] Swap pending (Attempt 3/10): ,,
-            //[⟳] [Base Sepolia] Swap pending (Attempt 4/10): ,,
+            
  
 export const SHOW_SWAP_PENDING_LOG = {   
   arbitrum: false,
-  base: false,
+  base: false,               //added to manage this: //[⟳] [Base Sepolia] Swap pending (Attempt 3/10)
   ethereum_sepolia: false,
   monad: true,
   megaeth: true,
