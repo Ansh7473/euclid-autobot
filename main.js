@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import { ethers } from 'ethers';
 import logger from './logger.js';
-import { SETTINGS, FLOW, randomDelay } from './config.js';
+import { SETTINGS, FLOW, randomDelay, getRandomInRange } from './config.js';
 import processArbitrumSwap from './euclid-arbitrum-sepolia.js';
 import processBaseSwap from './euclid-base-sepolia.js';
 import processEthereumSwap from './euclid-ethereum-sepolia.js';
@@ -80,30 +80,29 @@ async function main() {
       continue;
     }
 
-    // Get swap parameters for this chain
-    const numSwaps = selected.flow.NUMBER_OF_SWAPS[0];
-    const minAmount = selected.flow.AMOUNT_TO_SWAP[0];
-    const maxAmount = selected.flow.AMOUNT_TO_SWAP[1];
-    const minDelay = SETTINGS.PAUSE_BETWEEN_SWAPS[0];
-    const maxDelay = SETTINGS.PAUSE_BETWEEN_SWAPS[1];
-
-    logger.info(`Processing ${privateKeys.length} wallets on ${selected.name} with ${SETTINGS.THREADS} thread(s)`);
-
     // Process wallets in parallel with concurrency limit
     await processInParallel(
       privateKeys,
       SETTINGS.THREADS,
       async (key, walletIndex) => {
-        // Apply RANDOM_INITIALIZATION_PAUSE before processing each wallet
-        const initDelay = (SETTINGS.RANDOM_INITIALIZATION_PAUSE[0] + Math.random() * (SETTINGS.RANDOM_INITIALIZATION_PAUSE[1] - SETTINGS.RANDOM_INITIALIZATION_PAUSE[0])) * 1000;
-        logger.loading(`[Initialization] Waiting ${Math.round(initDelay / 1000)}s for wallet ${walletIndex}...`);
-        await randomDelay(
-          SETTINGS.RANDOM_INITIALIZATION_PAUSE[0] * 1000,
-          SETTINGS.RANDOM_INITIALIZATION_PAUSE[1] * 1000,
-          `Wallet ${walletIndex} initialization`
-        );
+        // Generate a unique random delay for each wallet and log it
+        const delaySec = getRandomInRange(SETTINGS.RANDOM_INITIALIZATION_PAUSE[0], SETTINGS.RANDOM_INITIALIZATION_PAUSE[1]);
+        logger.loading(`[Initialization] Waiting ${delaySec}s for wallet ${walletIndex}...`);
+        await randomDelay(delaySec * 1000, delaySec * 1000, `Wallet ${walletIndex} initialization`);
 
-        logger.info(`Processing wallet ${walletIndex}/${privateKeys.length} on ${selected.name}`);
+        // Randomize numSwaps per wallet
+        const numSwaps = (selected.flow.NUMBER_OF_SWAPS[0] === selected.flow.NUMBER_OF_SWAPS[1])
+          ? selected.flow.NUMBER_OF_SWAPS[0]
+          : (typeof getRandomInRange === 'function'
+              ? getRandomInRange(selected.flow.NUMBER_OF_SWAPS[0], selected.flow.NUMBER_OF_SWAPS[1])
+              : Math.floor(Math.random() * (selected.flow.NUMBER_OF_SWAPS[1] - selected.flow.NUMBER_OF_SWAPS[0] + 1)) + selected.flow.NUMBER_OF_SWAPS[0]);
+        // Optionally randomize minAmount/maxAmount per wallet if desired (currently fixed per run)
+        const minAmount = selected.flow.AMOUNT_TO_SWAP[0];
+        const maxAmount = selected.flow.AMOUNT_TO_SWAP[1];
+        const minDelay = SETTINGS.PAUSE_BETWEEN_SWAPS[0];
+        const maxDelay = SETTINGS.PAUSE_BETWEEN_SWAPS[1];
+
+        logger.info(`Processing wallet ${walletIndex}/${privateKeys.length} on ${selected.name} (numSwaps: ${numSwaps})`);
         await selected.process(
           key,
           'random',
