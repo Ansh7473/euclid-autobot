@@ -16,27 +16,27 @@ export const SETTINGS = {
 export const FLOW = {
   arbitrum: {
     NUMBER_OF_SWAPS: [2, 6],
-    AMOUNT_TO_SWAP: [0.0018, 0.002], //min 0.0018 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
   base: {
     NUMBER_OF_SWAPS: [3, 6],
-    AMOUNT_TO_SWAP: [0.0007, 0.00075], //min 0.0018 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
   ethereum_sepolia: {
     NUMBER_OF_SWAPS: [3, 6],
-    AMOUNT_TO_SWAP: [0.0006, 0.0007], //min 0.0018 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
   monad: {
     NUMBER_OF_SWAPS: [3, 6],
-    AMOUNT_TO_SWAP: [0.00075, 0.00085], //min 0.0018 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
   megaeth: {
     NUMBER_OF_SWAPS: [3, 6],
-    AMOUNT_TO_SWAP: [0.002, 0.0025],   //min 0.002 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022],   //min 0.002 for now  // if no route try incresing amount 
   },
   somnia: {
     NUMBER_OF_SWAPS: [3, 6],
-    AMOUNT_TO_SWAP: [0.00071, 0.00081], //min 0.0018 for now  // if no route try incresing amount 
+    AMOUNT_TO_SWAP: [0.0021, 0.0022], //min 0.0018 for now  // if no route try incresing amount 
   },
 };
             //added to manage this  :)
@@ -67,18 +67,6 @@ export const CHECK_SWAP_STATUS = {
   megaeth: { MAX_ATTEMPTS: 10, DELAY: 30000 },
   somnia: { MAX_ATTEMPTS: 10, DELAY: 30000 },
 };
-
-
-
-
-//IGNORE
-
-
-
-
-
-
-
 
 export const randomDelay = (min = 2000, max = 5000, context = '') => {
   const delay = (min === max) ? min : Math.floor(Math.random() * (max - min + 1)) + min;
