@@ -50,6 +50,7 @@ export const SHOW_SWAP_PENDING_LOG = {
 
 
 //added bcz script stuck confirming status throught website and their web is unstable to update status 
+//reduce attemp and delay so next transaction process other wise script stuck to finalise the status of txn
 export const CHECK_SWAP_STATUS = {
   arbitrum: { MAX_ATTEMPTS: 1, DELAY: 3000 },
   base: { MAX_ATTEMPTS: 10, DELAY: 30000 },
