@@ -285,14 +285,7 @@ We welcome contributions! Please follow these steps:
 - Test on testnet before submitting
 - Update documentation for new features
 
-## 📞 Support
 
-For technical support, feature requests, or bug reports:
-
-- 📧 **Email**: [your-email@domain.com]
-- 💬 **Discord**: [Your Discord]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/euclid-bot/issues)
-- 📚 **Documentation**: [Wiki](https://github.com/yourusername/euclid-bot/wiki)
 
 ## ⚠️ Disclaimer
 
@@ -303,12 +296,6 @@ This bot is designed for **educational and testnet purposes only**.
 - **Testnet Only**: Optimized for testnet environments
 - **No Warranty**: Software provided "as is" without warranty
 
-## 🔗 Useful Links
-
-- 🌐 [Euclid Protocol](https://euclidprotocol.com/)
-- 📖 [Euclid Documentation](https://docs.euclidprotocol.com/)
-- 🔧 [Testnet Interface](https://testnet.euclidswap.io/)
-- 💬 [Community Discord](https://discord.gg/euclid)
 
 ## 📄 License
 
