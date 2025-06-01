@@ -125,21 +125,6 @@ The enhanced automation interface provides:
 **🎊 The Euclid bot now has a world-class automation interface! 🎊**
 
 
-## 🧠 Installation & Setup
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/Ansh7473/euclid-botfixed.git
-cd euclid-botfixed
-```
-# 2. Install dependencies
-```
-npm update
-
-node main.js
-```
-
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -152,7 +137,7 @@ node main.js
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/euclid-bot.git
+git clone git clone https://github.com/Ansh7473/euclid-botfixed.git
 cd euclid-bot
 
 # Install dependencies
