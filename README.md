@@ -125,21 +125,6 @@ The enhanced automation interface provides:
 **🎊 The Euclid bot now has a world-class automation interface! 🎊**
 
 
-## 🧠 Installation & Setup
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/Ansh7473/euclid-botfixed.git
-cd euclid-botfixed
-```
-# 2. Install dependencies
-```
-npm update
-
-node main.js
-```
-
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -152,8 +137,8 @@ node main.js
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/euclid-bot.git
-cd euclid-bot
+ git clone https://github.com/Ansh7473/euclid-autobot.git
+cd euclid-autobot
 
 # Install dependencies
 npm install
@@ -300,14 +285,7 @@ We welcome contributions! Please follow these steps:
 - Test on testnet before submitting
 - Update documentation for new features
 
-## 📞 Support
 
-For technical support, feature requests, or bug reports:
-
-- 📧 **Email**: [your-email@domain.com]
-- 💬 **Discord**: [Your Discord]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/euclid-bot/issues)
-- 📚 **Documentation**: [Wiki](https://github.com/yourusername/euclid-bot/wiki)
 
 ## ⚠️ Disclaimer
 
@@ -318,12 +296,6 @@ This bot is designed for **educational and testnet purposes only**.
 - **Testnet Only**: Optimized for testnet environments
 - **No Warranty**: Software provided "as is" without warranty
 
-## 🔗 Useful Links
-
-- 🌐 [Euclid Protocol](https://euclidprotocol.com/)
-- 📖 [Euclid Documentation](https://docs.euclidprotocol.com/)
-- 🔧 [Testnet Interface](https://testnet.euclidswap.io/)
-- 💬 [Community Discord](https://discord.gg/euclid)
 
 ## 📄 License
 
