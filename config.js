@@ -8,10 +8,10 @@ export const SETTINGS = {
 };
 
 
-// [✗] No supported tokens with valid routes on Base Sepolia. // [✗] No supported tokens with valid routes on Base Sepolia.  
+
 //[✗] No supported tokens with valid routes on Base Sepolia.  // [✗] No supported tokens with valid routes on Base Sepolia.
 //NOTE: // if no route try incresing amount 
-//NOTE: // if no route try incresing amount 
+
 
 export const FLOW = {
   arbitrum: {
@@ -54,6 +54,10 @@ export const FLOW = {
     NUMBER_OF_SWAPS: [3, 6],
     AMOUNT_TO_SWAP: [2, 3], // OSMO amounts for testnet
   },
+  oraichain: {
+    NUMBER_OF_SWAPS: [3, 6],
+    AMOUNT_TO_SWAP: [4, 5], // ORAI amounts for testnet
+  },
 };
 
  
@@ -67,7 +71,8 @@ export const SHOW_SWAP_PENDING_LOG = {
   optimism: false,
   linea: false,
   soneium: false,
-  osmosis: false,
+  osmosis: true,
+  oraichain: true,
 };   
 
 export const RETRY = {
@@ -86,6 +91,7 @@ export const CHECK_SWAP_STATUS = {
   linea: { MAX_ATTEMPTS: 10, DELAY: 30000 },
   soneium: { MAX_ATTEMPTS: 10, DELAY: 30000 },
   osmosis: { MAX_ATTEMPTS: 5, DELAY: 15000 },
+  oraichain: { MAX_ATTEMPTS: 5, DELAY: 15000 },
 };
 
 export const randomDelay = (min = 2000, max = 5000, context = '') => {

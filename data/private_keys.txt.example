@@ -1,0 +1,5 @@
+# Private Keys Configuration
+# Add your EVM private keys here, one per line
+# Format: 0x1234567890abcdef...
+# Example:
+# 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef

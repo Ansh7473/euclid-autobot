@@ -12,6 +12,7 @@ import processMegaethSwap from './chains/euclid-megaeth.js';
 import processMonadSwap from './chains/euclid-monad.js';
 import processOptimismSwap from './chains/euclid-optimism.js';
 import processOsmosisSwap from './chains/euclid-osmosis.js';
+import processOraichainSwap from './chains/euclid-oraichain.js';
 import processSomniaSwap from './chains/euclid-somnia.js';
 import processSoneiumSwap from './chains/euclid-soneium.js';
 
@@ -75,6 +76,7 @@ const chainOptions = [
   { id: '8', name: 'Linea Sepolia', process: processLineaSwap, flow: FLOW.linea },
   { id: '9', name: 'Soneium Minato Testnet', process: processSoneiumSwap, flow: FLOW.soneium },
   { id: '10', name: 'Osmosis Testnet', process: processOsmosisSwap, flow: FLOW.osmosis },
+  { id: '11', name: 'Oraichain Testnet', process: processOraichainSwap, flow: FLOW.oraichain },
 ];
 
 async function main() {
@@ -110,13 +112,13 @@ async function main() {
     console.log('');
 
     // Choose which keys to use based on chain
-    const isCosmosChain = selected.name === 'Osmosis Testnet';
+    const isCosmosChain = selected.name === 'Osmosis Testnet' || selected.name === 'Oraichain Testnet';
     const keysToUse = isCosmosChain ? cosmosKeys : privateKeys;
     const keyType = isCosmosChain ? 'Cosmos' : 'EVM';
     
     if (keysToUse.length === 0) {
       if (isCosmosChain) {
-        logger.error(`No Cosmos keys found in cosmos_keys.txt for Osmosis.`);
+        logger.error(`No Cosmos keys found in cosmos_keys.txt for ${selected.name}.`);
       } else {
         logger.error(`No EVM private keys found in private_keys.txt for ${selected.name}.`);
       }
@@ -127,7 +129,7 @@ async function main() {
     const { NUMBER_OF_SWAPS, AMOUNT_TO_SWAP } = selected.flow;
     const numSwapsRange = `${NUMBER_OF_SWAPS[0]}-${NUMBER_OF_SWAPS[1]}`;
     const amountRange = `${AMOUNT_TO_SWAP[0]} - ${AMOUNT_TO_SWAP[1]}`;
-    const tokenSymbol = isCosmosChain ? 'OSMO' : 'ETH';
+    const tokenSymbol = isCosmosChain ? (selected.name === 'Osmosis Testnet' ? 'OSMO' : 'ORAI') : 'ETH';
 
     // Enhanced pre-execution summary
     logger.info(`🔧 Configuration Summary:`);
@@ -141,7 +143,11 @@ async function main() {
     // Route testing preview for enhanced automation
     if (isCosmosChain) {
       logger.info(`🔍 Cross-chain routing preview:`);
-      logger.info(`   🌐 Source: Osmosis (OSMO native token)`);
+      if (selected.name === 'Osmosis Testnet') {
+        logger.info(`   🌐 Source: Osmosis (OSMO native token)`);
+      } else if (selected.name === 'Oraichain Testnet') {
+        logger.info(`   🌐 Source: Oraichain (ORAI native token)`);
+      }
       logger.info(`   🎯 Targets: MON, STT, EUCLID, USDC, USDT (EVM chains)`);
       logger.info(`   🔗 Bridge: Euclid Virtual Settlement Layer`);
     } else {
