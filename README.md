@@ -138,7 +138,7 @@ The enhanced automation interface provides:
 ```bash
 # Clone the repository
 git clone git clone https://github.com/Ansh7473/euclid-autobot.git
-cd euclid-bot
+cd euclid-autobot
 
 # Install dependencies
 npm install
