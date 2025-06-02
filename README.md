@@ -18,7 +18,9 @@ The comprehensive automation interface enhancement for all Euclid chain modules 
 9. ✅ **euclid-soneium.js** - Enhanced with full automation interface
 
 ### 🌌 Cosmos Chain Module (1 module):
-10. ✅ **euclid-osmosis.js** - Reference pattern (already had excellent logging)
+10. ✅ **euclid-osmosis.js** - Enhanced with full automation interface
+11. ✅ **euclid-oraichain.js** - Enhanced with full automation interface
+ 
 
 ### 🎛️ Main Interface:
 11. ✅ **main.js** - Enhanced with comprehensive automation dashboard
