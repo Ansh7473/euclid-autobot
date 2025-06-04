@@ -173,7 +173,7 @@ node main.js
 │   ├── 📄 euclid-osmosis.js
 │   ├── 📄 euclid-somnia.js
 │   └── 📄 euclid-soneium.js
-├── 📄 private_keys.txt           # Your wallet private keys
+├── 📄 private_keys.txt           # evm wallet private keys
 ├── 📄 cosmos_keys.txt            # Cosmos wallet keys (optional)
 └── 📄 package.json               # Dependencies
 ```
