@@ -173,8 +173,8 @@ node main.js
 │   ├── 📄 euclid-osmosis.js
 │   ├── 📄 euclid-somnia.js
 │   └── 📄 euclid-soneium.js
-├── 📄 private_keys.txt           # evm wallet private keys
-├── 📄 cosmos_keys.txt            # Cosmos wallet keys (optional)
+├── 📄 private_keys.txt           # evm wallet private keys module(1-9) usage
+├── 📄 cosmos_keys.txt            # Cosmos wallet keys module(10-11)usage
 └── 📄 package.json               # Dependencies
 ```
 
@@ -202,7 +202,7 @@ export const SETTINGS = {
 0xabcdef1234567890...
 ```
 
-**Cosmos Chains**: Add Cosmos keys to `cosmos_keys.txt` (optional)
+**Cosmos Chains**: Add Cosmos keys to `cosmos_keys.txt` 
 ```
 cosmos_private_key_1
 cosmos_private_key_2
