@@ -1,21 +1,28 @@
-
-
-
-
-
-
 ## 🚀 Quick Start
-
-### Prerequisites
+@@ -88,22 +10,7 @@ The enhanced automation interface provides:
 - **Node.js** 18+ installed
 - **NPM** package manager
 - **Private keys** for wallet addresses
+- **Testnet tokens** on supported chains
+
+### Installation
+
+```bash
+# Clone the repository
+ git clone https://github.com/Ansh7473/euclid-autobot.git
+cd euclid-autobot
+
+# Install dependencies
+npm install
+
+# Configure your private keys
+echo "0x1234..." > private_keys.txt
+
+# For Cosmos chains (optional)
 - **Testnet tokens** on supported chains Hy
 echo "cosmos_private_key_here" > cosmos_keys.txt
 
 # Start the bot
-node main.js
-```
 
 ## 📁 Project Structure
 
