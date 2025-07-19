@@ -168,11 +168,6 @@ This bot is designed for **educational and testnet purposes only**.
 - **No Warranty**: Software provided "as is" without warranty
 
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
 
 <div align="center">
 
