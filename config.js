@@ -60,6 +60,8 @@ export const FLOW = {
   },
 };
 
+
+//if you understand you use below features also 👇🏼 
  
 export const SHOW_SWAP_PENDING_LOG = {   
   arbitrum: false,
