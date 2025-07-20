@@ -23,7 +23,7 @@ echo "0x1234..." > private_keys.txt
 echo "cosmos_private_key_here" > cosmos_keys.txt
 
 # Start the bot
-
+```
 ## 📁 Project Structure
 
 ```
