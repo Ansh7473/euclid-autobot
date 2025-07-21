@@ -1,5 +1,5 @@
 ## 🚀 Quick Start
-@@ -88,22 +10,7 @@ The enhanced automation interface provides:
+The enhanced automation interface provides:
 - **Node.js** 18+ installed
 - **NPM** package manager
 - **Private keys** for wallet addresses
